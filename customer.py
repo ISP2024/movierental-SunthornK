@@ -23,7 +23,7 @@ class Customer:
     def get_name(self):
         """Get the customer's name."""
         return self.name
-    
+
     def statement(self):
         """Create a statement of rentals for the current period.
 
@@ -43,7 +43,7 @@ class Customer:
 
         for rental in self.rentals:
             # compute rental change
-            amount = rental.get_price()
+            charge = rental.get_price()
             # compute the frequent renter points based on movie price code
             if rental.get_movie().get_price_code() == Movie.NEW_RELEASE:
                 # New release earns 1 point per day rented
@@ -55,9 +55,9 @@ class Customer:
             statement += rental_fmt.format(
                             rental.get_movie().get_title(),
                             rental.get_days_rented(),
-                            amount)
+                            charge)
             # and accumulate activity
-            total_amount += amount
+            total_amount += charge
 
         # footer: summary of charges
         statement += "\n"
