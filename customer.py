@@ -1,6 +1,4 @@
 from rental import Rental
-from movie import Movie
-
 
 class Customer:
     """A customer who rents movies.
@@ -33,7 +31,6 @@ class Customer:
         Returns:
             the statement as a String
         """
-        frequent_renter_points = 0
         # the .format method substitutes actual values into the fmt string
         statement = f"Rental Report for {self.name}\n\n"
         header_fmt = "{:40s}  {:6s} {:6s}\n"
@@ -43,7 +40,7 @@ class Customer:
         for rental in self.rentals:
             # compute rental change
             charge = rental.get_price()
-            frequent_renter_points += rental.rental_points()
+
             #  add a detail line to statement
             statement += rental_fmt.format(
                             rental.get_movie().get_title(),
@@ -54,7 +51,7 @@ class Customer:
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format(
                        "Total Charges", "", self.get_total_charge())
-        statement += "Frequent Renter Points earned: {}\n".format(frequent_renter_points)
+        statement += "Frequent Renter Points earned: {}\n".format(self.get_total_rental_points())
 
         return statement
 
@@ -65,4 +62,9 @@ class Customer:
             total_charge += rental.get_price()
         return total_charge
 
-
+    def get_total_rental_points(self):
+        """Calculate the total rental points for all rentals."""
+        total_points = 0
+        for rental in self.rentals:
+            total_points += rental.rental_points()
+        return total_points
