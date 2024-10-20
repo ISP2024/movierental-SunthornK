@@ -1,12 +1,18 @@
-from pricing import NewRelease, RegularPrice, ChildrensPrice
+from dataclasses import dataclass
+from typing import Collection
 
+
+@dataclass(frozen=True)
 class Movie:
-    NEW_RELEASE = NewRelease()
-    REGULAR = RegularPrice()
-    CHILDRENS = ChildrensPrice()
+    title: str
+    year: int
+    genre: Collection[str]
 
-    def __init__(self, title):
-        self.title = title
+    def is_genre(self, genre: str) -> bool:
+        return genre.lower() in (i.lower() for i in self.genre)
 
     def get_title(self):
         return self.title
+
+    def __str__(self):
+        return f"{self.title} ({self.year})"
