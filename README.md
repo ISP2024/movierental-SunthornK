@@ -27,3 +27,10 @@ See [Resources](https://cpske.github.io/ISP/assignment/movierental/movierental-p
 
 ### 2.2 what design principle suggests this refactoring? Why?
 - Single Responsibility Principle (SRP): `Movie` should focus on movie data, while `Rental` handles pricing and points, since they are directly related to the rental process.
+
+### 5.2 Where `price_code_for_movie` is Implemented and Why?
+- I choose to implemented the `price_code_for_movie` on the `Movie` class because
+ - Low Coupling: Keeping the pricing method in the Movie class means the Rental class doesn’t need to depend on it. 
+   Then if we want to change how prices work we could do it without affecting the rental logic.
+ - High Cohesion: The Movie class deals with movie details like the release year and genres. 
+   Since the price code is based on these details, it makes sense to keep the method there.

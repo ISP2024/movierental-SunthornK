@@ -1,6 +1,8 @@
 import csv
 import logging
 from dataclasses import dataclass
+from datetime import datetime
+from pricing import NewRelease, RegularPrice, ChildrensPrice
 from typing import Collection, Optional
 
 
@@ -9,6 +11,19 @@ class Movie:
     title: str
     year: int
     genre: Collection[str]
+
+    NEW_RELEASE = NewRelease()
+    REGULAR = RegularPrice()
+    CHILDRENS = ChildrensPrice()
+
+    @classmethod
+    def price_code_for_movie(cls, movie):
+        if movie.year == datetime.now().year:
+            return cls.NEW_RELEASE
+        for genre in movie.genres:
+            if genre.lower() in ["children", "childrens"]:
+                return cls.CHILDRENS
+        return cls.REGULAR
 
     def is_genre(self, genre: str) -> bool:
         return genre.lower() in (i.lower() for i in self.genre)
