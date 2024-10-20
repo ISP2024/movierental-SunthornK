@@ -66,5 +66,5 @@ class Customer:
         """Calculate the total rental points for all rentals."""
         total_points = 0
         for rental in self.rentals:
-            total_points += rental.rental_points()
+            total_points += rental.get_rental_points()
         return total_points

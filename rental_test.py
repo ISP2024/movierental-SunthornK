@@ -15,7 +15,7 @@ class RentalTest(unittest.TestCase):
         """trivial test to catch refactoring errors or change in API of Movie"""
         m = Movie("Air", Movie.REGULAR)
         self.assertEqual("Air", m.get_title())
-        self.assertEqual(Movie.REGULAR, m.price_strategy)
+        self.assertEqual(Movie.REGULAR, m.price_code)
 
 
     def test_rental_price(self):
@@ -38,12 +38,12 @@ class RentalTest(unittest.TestCase):
     def test_rental_points(self):
         # Test new release earns points per day rented
         rental = Rental(self.new_movie, 3)
-        self.assertEqual(rental.rental_points(), 3)
+        self.assertEqual(rental.get_rental_points(), 3)
 
         # Test regular movie earns 1 point
         rental = Rental(self.regular_movie, 5)
-        self.assertEqual(rental.rental_points(), 1)
+        self.assertEqual(rental.get_rental_points(), 1)
 
         # Test children's movie earns 1 point
         rental = Rental(self.childrens_movie, 9)
-        self.assertEqual(rental.rental_points(), 1)
+        self.assertEqual(rental.get_rental_points(), 1)
