@@ -20,7 +20,7 @@ class Movie:
     def price_code_for_movie(cls, movie):
         if movie.year == datetime.now().year:
             return cls.NEW_RELEASE
-        for genre in movie.genres:
+        for genre in movie.genre:
             if genre.lower() in ["children", "childrens"]:
                 return cls.CHILDRENS
         return cls.REGULAR
