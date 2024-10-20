@@ -1,5 +1,7 @@
+import csv
+import logging
 from dataclasses import dataclass
-from typing import Collection
+from typing import Collection, Optional
 
 
 @dataclass(frozen=True)
@@ -16,3 +18,40 @@ class Movie:
 
     def __str__(self):
         return f"{self.title} ({self.year})"
+
+
+class MovieCatalog:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.movies = {}
+            cls._instance.load_data("Movie Rental Part 2.csv")
+        return cls._instance
+
+    def load_data(self, filepath: str):
+        with open(filepath, mode='r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            for line, row in enumerate(reader):
+                if not row or row[0].startswith('#'):
+                    continue
+                if len(row) < 4:
+                    logging.error(f"Line {line+1}: Unrecognized format \"{','.join(row)}\"")
+                    continue
+                title = row[1]
+                try:
+                    year = int(row[2])
+                except ValueError:
+                    logging.error(f"Line {line+1}: Invalid year '{row[2]}'")
+                    continue
+                genres = {genre for genre in row[3].split("|")}
+                self.movies[(title, year)] = Movie(title, year, genres)
+
+    def get_movie(self, title: str, year: Optional[int] = None):
+        if year is not None:
+            return self.movies.get((title, year))
+        for (t, y), movie in self.movies.items():
+            if t.lower() == title.lower():
+                return movie
+        return None
